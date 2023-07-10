@@ -1,5 +1,4 @@
----
-format_version: '11'
+format_version: "11"
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: other
 workflows:
@@ -29,7 +28,12 @@ meta:
     stack: osx-xcode-15.0.x-edge
     machine_type_id: g2-m1.8core
 trigger_map:
-- push_branch: "*"
+- push_branch: '*'
   workflow: primary
-- pull_request_source_branch: "*"
+- pull_request_source_branch: '*'
   workflow: primary
+app:
+  envs:
+  - opts:
+      is_expand: false
+    ACTIONS_RUNNER_HOOK_JOB_COMPLETED: post-run.sh
