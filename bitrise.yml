@@ -38,4 +38,4 @@ app:
   envs:
   - opts:
       is_expand: false
-    ACTIONS_RUNNER_HOOK_JOB_COMPLETED: post-run.sh
+    ACTIONS_RUNNER_HOOK_JOB_COMPLETED: $BITRISE_SOURCE_DIR/post-run.sh
