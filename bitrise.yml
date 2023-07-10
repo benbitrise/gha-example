@@ -1,0 +1,35 @@
+---
+format_version: '11'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: other
+workflows:
+  primary:
+    steps:
+    - script@1:
+        title: Install and start GHA
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            # fail if any commands fails
+            set -e
+            # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully
+            set -o pipefail
+            # debug log
+            set -x
+
+            mkdir actions-runner && cd actions-runner
+            curl -o actions-runner-osx-arm64-2.305.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.305.0/actions-runner-osx-arm64-2.305.0.tar.gz
+            echo "a2383a869b99793dee5e1ff7c1df4e7bc86f73521ae03f884f0c7aa43830e2cb  actions-runner-osx-arm64-2.305.0.tar.gz" | shasum -a 256 -c
+            tar xzf ./actions-runner-osx-arm64-2.305.0.tar.gz
+            ./config.sh --url https://github.com/benbitrise/gha-example --token $GHA_TOKEN --ephemeral --disableupdate --labels bitrise
+
+            ./run.sh
+meta:
+  bitrise.io:
+    stack: osx-xcode-15.0.x-edge
+    machine_type_id: g2-m1.8core
+trigger_map:
+- push_branch: "*"
+  workflow: primary
+- pull_request_source_branch: "*"
+  workflow: primary
